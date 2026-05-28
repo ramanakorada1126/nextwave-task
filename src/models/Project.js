@@ -5,11 +5,11 @@ const Project = sequelize.define(
   "Project",
   {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
       primaryKey: true,
     },
-    orgId: { type: DataTypes.UUID, allowNull: false },
+    orgId: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false },
     name: { type: DataTypes.STRING(140), allowNull: false },
     description: { type: DataTypes.TEXT, allowNull: true },
   },

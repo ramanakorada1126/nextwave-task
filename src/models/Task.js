@@ -6,12 +6,12 @@ const Task = sequelize.define(
   "Task",
   {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
       primaryKey: true,
     },
-    orgId: { type: DataTypes.UUID, allowNull: false },
-    projectId: { type: DataTypes.UUID, allowNull: true },
+    orgId: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false },
+    projectId: { type: DataTypes.INTEGER.UNSIGNED, allowNull: true },
     title: { type: DataTypes.STRING(200), allowNull: false },
     description: { type: DataTypes.TEXT, allowNull: true },
     priority: {
@@ -24,9 +24,9 @@ const Task = sequelize.define(
       allowNull: false,
       defaultValue: "TODO",
     },
-    assigneeId: { type: DataTypes.UUID, allowNull: false },
+    assigneeId: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false },
     dueDate: { type: DataTypes.DATE, allowNull: true },
-    createdById: { type: DataTypes.UUID, allowNull: false },
+    createdById: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false },
     completedAt: { type: DataTypes.DATE, allowNull: true },
   },
   {
