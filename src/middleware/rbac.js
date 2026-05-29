@@ -1,4 +1,4 @@
-function requireRole(...roles) {
+function authorizeRoles(...roles) {
   return (req, res, next) => {
     const role = req.user?.role;
     if (!role) {
@@ -11,5 +11,5 @@ function requireRole(...roles) {
   };
 }
 
-module.exports = { requireRole };
+module.exports = { authorizeRoles };
 

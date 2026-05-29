@@ -52,6 +52,13 @@ Common:
 ## API Routes (current)
 Base router is mounted at `/` (see `src/routes/index.js`).
 
+## Swagger / OpenAPI
+An OpenAPI spec is included at `openapi.yaml`.
+
+You can:
+- Paste it into Swagger Editor, or
+- Import it into Postman as an API definition.
+
 ### Auth
 - `POST /auth/register`
   - body: `{ org_name, name, email, password }`
@@ -61,6 +68,20 @@ Base router is mounted at `/` (see `src/routes/index.js`).
   - body: `{ refresh_token }`
 - `POST /auth/logout`
   - body: `{ refresh_token }`
+
+### Users
+- `POST /users` (ADMIN only)
+  - body: `{ name, email, password, role }` where role is `MANAGER` or `MEMBER`
+- `GET /users` (ADMIN only)
+- `GET /users/:id` (ADMIN only)
+- `PATCH /users/:id` (ADMIN only)
+
+### Projects
+- `POST /projects` (ADMIN/MANAGER)
+- `GET /projects`
+- `GET /projects/:id`
+- `PATCH /projects/:id` (ADMIN/MANAGER)
+- `DELETE /projects/:id` (ADMIN/MANAGER)
 
 Validation:
 - Joi schemas live in `src/validation/authSchema.js`
@@ -166,4 +187,3 @@ To fully match the assignment spec:
 - Implement task list caching with Redis and document TTL/invalidation
 - Add OpenAPI/Swagger spec or Postman collection
 - Add at least 2 tests for critical flows (auth + refresh rotation, RBAC)
-

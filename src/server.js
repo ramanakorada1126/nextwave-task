@@ -1,18 +1,26 @@
 const { createApp } = require("./app");
 const { env } = require("./config/env");
-
-// NOTE: Redis is temporarily disabled.
-// const { redis } = require("./cache/redis");
-// const { seedIfNeeded } = require("./startup/seed");
+const { connectDB } = require("./db/connectDb");
+const { redis } = require("./cache/redis");
 
 
-const app = createApp();
+async function main() {
+   await connectDB();
+ 
+  if (env.REDIS_ENABLED && redis) {
+    await redis.ping();
+  }
 
-const PORT = process.env.PORT
-console.log(PORT)
+  const app = createApp();
+  app.listen(env.PORT, () => {
+    // eslint-disable-next-line no-console
+    console.log(`API listening on :${env.PORT}`);
+  });
+}
 
-app.listen(PORT,()=>{
-    console.log(`server hitting 💥 on http://localhost:${PORT}`)
-})
-
+main().catch((err) => {
+  // eslint-disable-next-line no-console
+  console.error(err);
+  process.exit(1);
+});
 

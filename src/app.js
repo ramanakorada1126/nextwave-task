@@ -5,7 +5,6 @@ const morgan = require("morgan");
 const { notFound } = require("./middleware/notFound");
 const { errorHandler } = require("./middleware/errorHandler");
 const { apiRouter } = require("./routes");
-const { connectDB } = require("./db/connectDb");
 
 function createApp() {
   const app = express();
@@ -16,13 +15,10 @@ function createApp() {
   app.use(morgan("dev"));
 
   app.get("/health", (req, res) =>
-    res.json({ ok: true, message: "Welcome to Nextwave Task Tracker API" }),
+    res.json({ status: 200, message: "OK", data: { ok: true, name: "Nextwave Task Tracker API" } }),
   );
 
-  app.use(apiRouter);
-
-  //db connection
-  connectDB();
+  app.use("/api/v1", apiRouter);
 
   app.use(notFound);
   app.use(errorHandler);

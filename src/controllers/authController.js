@@ -2,6 +2,7 @@ const { ApiError } = require("../utils/apiError");
 const { Organization, User } = require("../models");
 const { hashPassword, verifyPassword } = require("../services/passwordService");
 const { issueRefreshToken, revokeRefreshToken, rotateRefreshToken, signAccessToken } = require("../services/authService");
+const { send } = require("../utils/response");
 
 async function register(req, res) {
   const body = req.body;
@@ -23,7 +24,7 @@ async function register(req, res) {
 
   const accessToken = signAccessToken(user);
   const { refreshToken } = await issueRefreshToken(user.id);
-  return res.status(201).json({ access_token: accessToken, refresh_token: refreshToken });
+  return send(res, { status: 201, message: "Registered", data: { access_token: accessToken, refresh_token: refreshToken } });
 }
 
 async function login(req, res) {
@@ -37,20 +38,23 @@ async function login(req, res) {
 
   const accessToken = signAccessToken(user);
   const { refreshToken } = await issueRefreshToken(user.id);
-  return res.json({ access_token: accessToken, refresh_token: refreshToken });
+  return send(res, { status: 200, message: "Logged in", data: { access_token: accessToken, refresh_token: refreshToken } });
 }
 
 async function refresh(req, res) {
   const body = req.body;
   const rotated = await rotateRefreshToken(body.refresh_token);
-  return res.json({ access_token: rotated.accessToken, refresh_token: rotated.refreshToken });
+  return send(res, {
+    status: 200,
+    message: "Token refreshed",
+    data: { access_token: rotated.accessToken, refresh_token: rotated.refreshToken }
+  });
 }
 
 async function logout(req, res) {
   const body = req.body;
   await revokeRefreshToken(body.refresh_token);
-  return res.status(204).send();
+  return send(res, { status: 200, message: "Logged out", data: null });
 }
 
 module.exports = { login, logout, refresh, register };
-

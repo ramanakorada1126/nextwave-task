@@ -17,7 +17,9 @@ const envSchema = Joi.object({
   JWT_ACCESS_TTL_SECONDS: Joi.number().integer().positive().default(900),
   REFRESH_TOKEN_TTL_DAYS: Joi.number().integer().positive().default(14),
 
+  REDIS_ENABLED: Joi.boolean().truthy("true").falsy("false").default(false),
   REDIS_URL: Joi.string().default("redis://localhost:6379"),
+  REDIS_TASKLIST_TTL_SECONDS: Joi.number().integer().min(1).default(60),
 
   SEED_ADMIN: Joi.boolean().truthy("true").falsy("false").default(false),
   SEED_ORG_NAME: Joi.string().default("Demo Org"),
