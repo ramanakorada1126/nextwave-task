@@ -189,3 +189,23 @@ To fully match the assignment spec:
 - ✅ Add OpenAPI/Swagger spec (interactive Swagger UI at /api/docs)
 - Add at least 2 tests for critical flows (auth + refresh rotation, RBAC)
 - Add task filtering, sorting, and pagination
+
+
+<!-- ENV  -->
+# for docker compose up
+NODE_ENV=development
+PORT=5000
+
+MYSQL_HOST=db
+MYSQL_PORT=3306
+MYSQL_USER=root
+MYSQL_PASSWORD=ramanalocal
+MYSQL_DATABASE=nextwave_task_tracker
+
+JWT_ACCESS_SECRET=nextwave_task_tracker_jwt_secret_access_key
+JWT_ACCESS_TTL_SECONDS=900
+REFRESH_TOKEN_TTL_DAYS=7
+
+REDIS_ENABLED=true
+REDIS_URL=redis://redis:6379
+REDIS_TASKLIST_TTL_SECONDS=60
