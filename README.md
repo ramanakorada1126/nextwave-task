@@ -24,7 +24,7 @@ docker compose up --build
 ```
 
 3) Verify:
-- `GET http://localhost:3000/health`
+- `GET http://localhost:3000/api/v1/health`
 
 The API container connects to MySQL automatically via `MYSQL_HOST=db` from `docker-compose.yml`.
 

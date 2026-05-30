@@ -2,6 +2,8 @@ const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
 const morgan = require("morgan");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("../swagger.json");
 const { notFound } = require("./middleware/notFound");
 const { errorHandler } = require("./middleware/errorHandler");
 const { apiRouter } = require("./routes");
@@ -14,7 +16,11 @@ function createApp() {
   app.use(express.json({ limit: "1mb" }));
   app.use(morgan("dev"));
 
-  app.get("/health", (req, res) =>
+  // Swagger UI documentation
+  app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+  // Health check endpoint
+  app.get("/api/v1/health", (req, res) =>
     res.json({ status: 200, message: "OK", data: { ok: true, name: "Nextwave Task Tracker API" } }),
   );
 
