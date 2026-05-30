@@ -24,7 +24,8 @@ docker compose up --build
 ```
 
 3) Verify:
-- `GET http://localhost:3000/api/v1/health`
+- `GET http://localhost:5000/api/v1/health`
+- Swagger UI: `http://localhost:5000/api/docs`
 
 The API container connects to MySQL automatically via `MYSQL_HOST=db` from `docker-compose.yml`.
 
@@ -53,11 +54,15 @@ Common:
 Base router is mounted at `/` (see `src/routes/index.js`).
 
 ## Swagger / OpenAPI
-An OpenAPI spec is included at `openapi.yaml`.
+Interactive Swagger UI is available at `http://localhost:5000/api/docs` (after running the API).
 
-You can:
-- Paste it into Swagger Editor, or
-- Import it into Postman as an API definition.
+OpenAPI specs are available at:
+- `swagger.json` (JSON format)
+- `swagger.yaml` (YAML format)
+
+You can also:
+- Paste either file into Swagger Editor, or
+- Import into Postman as an API definition.
 
 ### Auth
 - `POST /auth/register`
@@ -76,12 +81,13 @@ You can:
 - `GET /users/:id` (ADMIN only)
 - `PATCH /users/:id` (ADMIN only)
 
-### Projects
-- `POST /projects` (ADMIN/MANAGER)
-- `GET /projects`
-- `GET /projects/:id`
-- `PATCH /projects/:id` (ADMIN/MANAGER)
-- `DELETE /projects/:id` (ADMIN/MANAGER)
+### Tasks
+- `POST /tasks` (authenticated)
+  - body: `{ title, description, priority, status, assigneeId, dueDate }`
+- `GET /tasks` (authenticated)
+- `GET /tasks/:id` (authenticated)
+- `PATCH /tasks/:id` (creator or ADMIN/MANAGER)
+- `DELETE /tasks/:id` (creator or ADMIN/MANAGER)
 
 Validation:
 - Joi schemas live in `src/validation/authSchema.js`
@@ -110,11 +116,6 @@ Implemented via Sequelize models in `src/models/*` and associations in `src/mode
   - `email` (unique)
   - `passwordHash`
   - `role` (ENUM: ADMIN|MANAGER|MEMBER, indexed)
-- `projects`
-  - `id` (UUID, PK)
-  - `orgId` (UUID, indexed)
-  - `name` (indexed)
-  - `description`
 - `tasks`
   - `id` (UUID, PK)
   - `orgId` (UUID, indexed)
@@ -181,9 +182,10 @@ Why this works:
 
 ## What’s Next / Improvements
 To fully match the assignment spec:
-- Add Users/Projects/Tasks routes + controllers (CRUD)
-- Add RBAC enforcement for all endpoints at middleware level
-- Enforce server-side task status transitions and “who can advance” rule
+- ✅ Add Users/Tasks routes + controllers (CRUD)
+- ✅ Add RBAC enforcement for all endpoints at middleware level
+- Enforce server-side task status transitions and "who can advance" rule
 - Implement task list caching with Redis and document TTL/invalidation
-- Add OpenAPI/Swagger spec or Postman collection
+- ✅ Add OpenAPI/Swagger spec (interactive Swagger UI at /api/docs)
 - Add at least 2 tests for critical flows (auth + refresh rotation, RBAC)
+- Add task filtering, sorting, and pagination
